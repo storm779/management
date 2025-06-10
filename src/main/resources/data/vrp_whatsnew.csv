@@ -1,0 +1,16 @@
+TITLE,DESCRIPTION,URL,VALIDFROM,VALIDTO,ENABLED,PRIORITY
+"Portal Launch","Welcome to the new Visakh Refinery Portal! This platform will serve as your central hub for all refinery-related information and services.","https://www.visakhrefinery.com/portal","2024-01-01","2024-02-01",TRUE,10
+"System Maintenance Schedule","Scheduled maintenance will be performed on the first Sunday of every month from 2:00 AM to 6:00 AM. Please plan accordingly.",,2024-01-01,,TRUE,5
+"New Safety Protocols","Updated safety protocols are now available in the documents section. All personnel are required to review and acknowledge the new guidelines.","/documents/safety-protocols","2024-01-01","2024-03-01",TRUE,8
+"Training Session Registration","Registration is now open for the quarterly safety training sessions. Please register through the portal by the end of this month.","/training/register","2024-01-01","2024-01-31",TRUE,7
+"Holiday Schedule Updated","The holiday schedule for the upcoming year has been updated. Please check the calendar section for details.","/calendar/holidays","2024-01-01","2024-02-15",TRUE,3
+"Emergency Procedures Update","Updated emergency procedures and evacuation plans are now available. All staff must review the new procedures immediately.","https://safety.visakhrefinery.com/emergency","2024-01-05","2024-02-05",TRUE,9
+"IT System Upgrade","Our IT systems will be upgraded over the weekend. Some services may be temporarily unavailable on Saturday evening.",,"2024-01-10","2024-01-15",TRUE,6
+"New Employee Orientation","New employee orientation sessions are scheduled for every Monday. Please check the HR portal for registration details.","/hr/orientation","2024-01-01",,TRUE,4
+"Environmental Compliance Update","New environmental compliance requirements are in effect. Please review the updated guidelines in the compliance section.","/compliance/environment","2024-01-08","2024-03-08",TRUE,7
+"Quarterly Performance Review","Quarterly performance review process will begin next week. Managers should prepare evaluation forms and schedule meetings.","/hr/performance","2024-01-15","2024-02-28",TRUE,5
+"Equipment Maintenance Notice","Routine maintenance of processing equipment will be conducted during the scheduled shutdown period. All safety protocols must be followed.",,"2024-01-20","2024-01-25",TRUE,8
+"Benefits Enrollment Open","Annual benefits enrollment is now open. Employees have until the end of the month to make changes to their benefits package.","/hr/benefits","2024-01-12","2024-01-31",TRUE,6
+"Security Awareness Training","Mandatory security awareness training sessions are scheduled for all employees. Completion is required by month-end.","/training/security","2024-01-18","2024-01-31",TRUE,9
+"Visitor Policy Update","Updated visitor policy is now in effect. All visitors must be registered in advance and accompanied by an authorized employee.","/policies/visitors","2024-01-22",,TRUE,4
+"Wellness Program Launch","New employee wellness program includes health screenings, fitness challenges, and mental health resources.","/hr/wellness","2024-01-25","2024-12-31",TRUE,3 

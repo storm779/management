@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Visakh Refinery Portal</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    
+    <style>
+        .register-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+        
+        .register-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .register-header {
+            background: #198754;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .register-body {
+            padding: 2rem;
+        }
+        
+        .form-control:focus {
+            border-color: #198754;
+            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+        }
+        
+        .btn-register {
+            background: #198754;
+            border-color: #198754;
+            padding: 12px;
+            font-weight: 500;
+        }
+        
+        .btn-register:hover {
+            background: #157347;
+            border-color: #146c43;
+        }
+        
+        .password-strength {
+            height: 5px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .strength-weak { background-color: #dc3545; }
+        .strength-medium { background-color: #ffc107; }
+        .strength-strong { background-color: #198754; }
+        
+        .validation-feedback {
+            font-size: 0.875rem;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #dee2e6;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <!-- Header -->
+            <div class="register-header">
+                <h3 class="mb-0">
+                    <img th:src="@{/images/logo.png}" alt="HP Logo" class="me-2" style="height: 28px; width: auto;">
+                    Visakh Refinery Portal
+                </h3>
+                <p class="mb-0 mt-2 opacity-75">Create Admin Account</p>
+            </div>
+            
+            <!-- Body -->
+            <div class="register-body">
+                <!-- Alert Messages -->
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                
+                <!-- Registration Form -->
+                <form th:action="@{/register}" method="post" th:object="${user}" id="registerForm">
+                    <!-- Full Name -->
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">
+                            <i class="bi bi-person me-1"></i>Full Name
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="fullName" 
+                               th:field="*{fullName}"
+                               placeholder="Enter your full name"
+                               required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                    </div>
+                    
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">
+                            <i class="bi bi-at me-1"></i>Username
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="username" 
+                               th:field="*{username}"
+                               placeholder="Choose a username"
+                               required>
+                        <div class="validation-feedback" id="usernameValidation"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                        <div th:if="${usernameError}" class="text-danger validation-feedback" th:text="${usernameError}"></div>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="bi bi-envelope me-1"></i>Email Address
+                        </label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email" 
+                               th:field="*{email}"
+                               placeholder="Enter your email address"
+                               required>
+                        <div class="validation-feedback" id="emailValidation"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                        <div th:if="${emailError}" class="text-danger validation-feedback" th:text="${emailError}"></div>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">
+                            <i class="bi bi-lock me-1"></i>Password
+                        </label>
+                        <div class="input-group">
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   th:field="*{password}"
+                                   placeholder="Create a strong password"
+                                   required>
+                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength mt-1" id="passwordStrength"></div>
+                        <div class="validation-feedback mt-1" id="passwordValidation"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">
+                            <i class="bi bi-lock-fill me-1"></i>Confirm Password
+                        </label>
+                        <div class="input-group">
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="confirmPassword" 
+                                   name="confirmPassword"
+                                   placeholder="Confirm your password"
+                                   required>
+                            <button type="button" class="btn btn-outline-secondary" id="toggleConfirmPassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                        <div class="validation-feedback" id="confirmPasswordValidation"></div>
+                        <div th:if="${passwordError}" class="text-danger validation-feedback" th:text="${passwordError}"></div>
+                    </div>
+                    
+                    <!-- Terms and Conditions -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            I agree to the <a href="#" class="text-success">Terms and Conditions</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-register btn-primary w-100" id="submitBtn" disabled>
+                        <i class="bi bi-person-plus me-2"></i>
+                        Create Account
+                    </button>
+                </form>
+                
+                <!-- Divider -->
+                <div class="divider">
+                    <span>or</span>
+                </div>
+                
+                <!-- Login Link -->
+                <div class="text-center">
+                    <p class="mb-0">Already have an account?</p>
+                    <a th:href="@{/login}" class="btn btn-outline-success w-100 mt-2">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Login to Your Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Password toggle functionality
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+            } else {
+                passwordField.type = 'password';
+                icon.className = 'bi bi-eye';
+            }
+        });
+        
+        document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('confirmPassword');
+            const icon = this.querySelector('i');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.className = 'bi bi-eye-slash';
+            } else {
+                passwordField.type = 'password';
+                icon.className = 'bi bi-eye';
+            }
+        });
+        
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            const validation = document.getElementById('passwordValidation');
+            
+            let strength = 0;
+            let messages = [];
+            
+            if (password.length >= 6) strength++;
+            else messages.push('At least 6 characters');
+            
+            if (/[A-Z]/.test(password)) strength++;
+            else messages.push('One uppercase letter');
+            
+            if (/[a-z]/.test(password)) strength++;
+            else messages.push('One lowercase letter');
+            
+            if (/[0-9]/.test(password)) strength++;
+            else messages.push('One number');
+            
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            else messages.push('One special character');
+            
+            // Update strength bar
+            strengthBar.className = 'password-strength mt-1';
+            if (strength <= 2) {
+                strengthBar.classList.add('strength-weak');
+                validation.innerHTML = '<small class="text-danger">Weak password. Missing: ' + messages.join(', ') + '</small>';
+            } else if (strength <= 3) {
+                strengthBar.classList.add('strength-medium');
+                validation.innerHTML = '<small class="text-warning">Medium strength. Consider adding: ' + messages.join(', ') + '</small>';
+            } else {
+                strengthBar.classList.add('strength-strong');
+                validation.innerHTML = '<small class="text-success">Strong password!</small>';
+            }
+            
+            checkPasswordMatch();
+        });
+        
+        // Password confirmation checker
+        document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
+        
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const validation = document.getElementById('confirmPasswordValidation');
+            
+            if (confirmPassword === '') {
+                validation.innerHTML = '';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                validation.innerHTML = '<small class="text-success"><i class="bi bi-check-circle me-1"></i>Passwords match</small>';
+            } else {
+                validation.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle me-1"></i>Passwords do not match</small>';
+            }
+            
+            updateSubmitButton();
+        }
+        
+        // Username availability checker
+        let usernameTimeout;
+        document.getElementById('username').addEventListener('input', function() {
+            const username = this.value;
+            const validation = document.getElementById('usernameValidation');
+            
+            if (username.length < 3) {
+                validation.innerHTML = '<small class="text-muted">Username must be at least 3 characters</small>';
+                return;
+            }
+            
+            clearTimeout(usernameTimeout);
+            usernameTimeout = setTimeout(() => {
+                validation.innerHTML = '<small class="text-info"><i class="bi bi-clock me-1"></i>Checking availability...</small>';
+                
+                fetch(`/api/check-username?username=${encodeURIComponent(username)}`)
+                    .then(response => response.json())
+                    .then(available => {
+                        if (available) {
+                            validation.innerHTML = '<small class="text-success"><i class="bi bi-check-circle me-1"></i>Username is available</small>';
+                        } else {
+                            validation.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle me-1"></i>Username is already taken</small>';
+                        }
+                        updateSubmitButton();
+                    })
+                    .catch(() => {
+                        validation.innerHTML = '<small class="text-warning">Could not check availability</small>';
+                    });
+            }, 500);
+        });
+        
+        // Email availability checker
+        let emailTimeout;
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value;
+            const validation = document.getElementById('emailValidation');
+            
+            if (!email.includes('@') || email.length < 5) {
+                validation.innerHTML = '<small class="text-muted">Enter a valid email address</small>';
+                return;
+            }
+            
+            clearTimeout(emailTimeout);
+            emailTimeout = setTimeout(() => {
+                validation.innerHTML = '<small class="text-info"><i class="bi bi-clock me-1"></i>Checking availability...</small>';
+                
+                fetch(`/api/check-email?email=${encodeURIComponent(email)}`)
+                    .then(response => response.json())
+                    .then(available => {
+                        if (available) {
+                            validation.innerHTML = '<small class="text-success"><i class="bi bi-check-circle me-1"></i>Email is available</small>';
+                        } else {
+                            validation.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle me-1"></i>Email is already registered</small>';
+                        }
+                        updateSubmitButton();
+                    })
+                    .catch(() => {
+                        validation.innerHTML = '<small class="text-warning">Could not check availability</small>';
+                    });
+            }, 500);
+        });
+        
+        // Terms checkbox
+        document.getElementById('agreeTerms').addEventListener('change', updateSubmitButton);
+        
+        // Update submit button state
+        function updateSubmitButton() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            const passwordsMatch = password === confirmPassword && password.length >= 6;
+            const formValid = passwordsMatch && agreeTerms;
+            
+            submitBtn.disabled = !formValid;
+        }
+        
+        // Auto-hide alerts
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+</body>
+</html> 
