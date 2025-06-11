@@ -7,223 +7,14 @@
     <title>What's New - Visakh Refinery Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- DataTables CSS -->
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    <!-- DataTables CSS (Official CDN) -->
+    <link href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
-    <style>
-        /* Reduced padding for statistics cards */
-        .stat-card .card-body {
-            padding: 1rem 0.75rem !important;
-        }
-        .stat-card .fs-2 {
-            font-size: 1.5rem !important;
-        }
-        .stat-card h4 {
-            font-size: 1.1rem !important;
-            margin-bottom: 0.25rem !important;
-        }
-        .stat-card p {
-            font-size: 0.8rem !important;
-            margin-bottom: 0 !important;
-        }
-        
-        /* Clean DataTables styling matching DataTables.net reference */
-        .dataTables_wrapper {
-            padding: 0;
-            margin-bottom: 1rem;
-        }
-        
-        /* Length control styling */
-        .dataTables_wrapper .dataTables_length {
-            margin-bottom: 1rem;
-        }
-        
-        .dataTables_wrapper .dataTables_length label {
-            font-weight: normal;
-            margin-bottom: 0;
-            color: #495057;
-        }
-        
-        .dataTables_wrapper .dataTables_length select {
-            margin: 0 0.5rem;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: white;
-            color: #495057;
-            min-width: 60px;
-        }
-        
-        /* Search control styling */
-        .dataTables_wrapper .dataTables_filter {
-            margin-bottom: 1rem;
-            text-align: right;
-        }
-        
-        .dataTables_wrapper .dataTables_filter label {
-            font-weight: normal;
-            margin-bottom: 0;
-            color: #495057;
-        }
-        
-        .dataTables_wrapper .dataTables_filter input[type="search"] {
-            margin-left: 0.5rem;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: white;
-            color: #495057;
-            width: 200px;
-        }
-        
-        .dataTables_wrapper .dataTables_filter input[type="search"]:focus {
-            border-color: #86b7fe;
-            outline: 0;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-        
-        /* Info and pagination styling */
-        .dataTables_wrapper .dataTables_info {
-            color: #6c757d;
-            font-size: 0.875rem;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate {
-            text-align: right;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.375rem 0.75rem;
-            margin-left: 0.125rem;
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem;
-            background: white;
-            color: #0d6efd;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: #e9ecef;
-            border-color: #adb5bd;
-            color: #0a58ca;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: #0d6efd;
-            border-color: #0d6efd;
-            color: white;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
-            color: #6c757d;
-            cursor: not-allowed;
-            background: white;
-            border-color: #dee2e6;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .dataTables_wrapper .dataTables_filter {
-                text-align: left;
-                margin-bottom: 0.5rem;
-            }
-            
-            .dataTables_wrapper .dataTables_filter input[type="search"] {
-                width: 100%;
-                margin-left: 0;
-                margin-top: 0.25rem;
-            }
-            
-            .dataTables_wrapper .dataTables_paginate {
-                text-align: center;
-            }
-        }
-        
-        /* Table styling */
-        #whatsNewTable {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        
-        #whatsNewTable thead th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-            padding: 12px 8px;
-            font-weight: 600;
-            color: #495057;
-            text-align: left;
-            position: relative;
-        }
-        
-        #whatsNewTable thead th.sorting,
-        #whatsNewTable thead th.sorting_asc,
-        #whatsNewTable thead th.sorting_desc {
-            cursor: pointer;
-            padding-right: 30px;
-        }
-        
-        #whatsNewTable thead th.sorting:after,
-        #whatsNewTable thead th.sorting_asc:after,
-        #whatsNewTable thead th.sorting_desc:after {
-            position: absolute;
-            top: 12px;
-            right: 8px;
-            display: block;
-            font-family: "bootstrap-icons";
-        }
-        
-        #whatsNewTable thead th.sorting:after {
-            content: "\F282";
-            color: #6c757d;
-        }
-        
-        #whatsNewTable thead th.sorting_asc:after {
-            content: "\F283";
-            color: #0d6efd;
-        }
-        
-        #whatsNewTable thead th.sorting_desc:after {
-            content: "\F286";
-            color: #0d6efd;
-        }
-        
-        #whatsNewTable tbody td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #dee2e6;
-            vertical-align: middle;
-        }
-        
-        #whatsNewTable tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        
-        /* Row striping */
-        #whatsNewTable tbody tr:nth-child(even) {
-            background-color: rgba(0,0,0,0.02);
-        }
-        
-        #whatsNewTable tbody tr:nth-child(even):hover {
-            background-color: #f8f9fa;
-        }
-        
-        /* Priority badges */
-        .priority-badge {
-            display: inline-block;
-            padding: 0.25em 0.5em;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-align: center;
-            min-width: 2rem;
-        }
-        
-        .priority-1 { background-color: #d1ecf1; color: #0c5460; }
-        .priority-2 { background-color: #cce5ff; color: #004085; }
-        .priority-3 { background-color: #ffffcc; color: #856404; }
-        .priority-4 { background-color: #f8d7da; color: #721c24; }
-    </style>
+    <!-- External CSS Files -->
+    <link th:href="@{/css/datatables-portal.css}" rel="stylesheet">
+    <link th:href="@{/css/form-enhancements.css}" rel="stylesheet">
 </head>
 <body>
     <!-- Sticky Navigation -->
@@ -366,11 +157,7 @@
                                 <span class="badge bg-primary ms-2" th:text="${whatsNewPage.totalElements}">0</span>
                             </h5>
                         </div>
-                        <div class="col-auto" sec:authorize="hasRole('ADMIN')">
-                            <button class="btn btn-sm btn-outline-danger" onclick="bulkAction('delete')" id="bulkDeleteBtn" style="display: none;">
-                                <i class="bi bi-trash me-1"></i>Delete Selected
-                            </button>
-                        </div>
+
                     </div>
                 </div>
 
@@ -379,9 +166,6 @@
                         <table id="whatsNewTable" class="table table-striped table-hover" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th sec:authorize="hasRole('ADMIN')" style="width: 50px;">
-                                        <input type="checkbox" class="form-check-input" id="selectAll">
-                                    </th>
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th style="width: 80px;">Priority</th>
@@ -392,10 +176,6 @@
                             </thead>
                             <tbody>
                                 <tr th:each="item : ${whatsNewPage.content}" class="align-middle">
-                                    <td sec:authorize="hasRole('ADMIN')">
-                                        <input type="checkbox" class="form-check-input whatsnew-checkbox" 
-                                               th:value="${item.id}">
-                                    </td>
                                     <td>
                                         <div class="fw-semibold" th:text="${item.title}">Title</div>
                                         <small class="text-muted" th:if="${item.url}">
@@ -584,224 +364,53 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Scripts (Official CDN Setup) -->
+    <!-- jQuery (Required first) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-
+    
+    <!-- DataTables Core -->
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+    
+    <!-- DataTables Extensions -->
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.bootstrap5.min.js"></script>
+    
+    <!-- External JavaScript Files -->
+    <script th:src="@{/js/datatables-config.js}"></script>
+    
+    <!-- Page Specific JavaScript -->
     <script>
-        // Declare whatsNewTable in global scope so filter functions can access it
-        let whatsNewTable;
-        let dataTableInitialized = false;
-        
-        // Debounce function to limit rapid function calls
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-        
         $(document).ready(function() {
-            // Check if user is admin to determine column configuration
-            const isAdmin = document.getElementById('selectAll') !== null;
-            const priorityColumn = isAdmin ? 3 : 2; // Priority column index (shows displayOrder)
-            const actionsColumn = isAdmin ? 6 : 5; // Actions column index
+            // Initialize DataTable with priority-only filter using external configuration
+            const whatsNewTable = DataTablesConfig.initializeWhatsNewDataTableWithPriorityFilter(false, true); // false = no bulk actions, true = enable priority filter
             
-            // Set up event delegation for checkboxes (works even when DataTables redraws)
-            if (isAdmin) {
-                // Event delegation for individual checkboxes
-                $(document).on('change', '.whatsnew-checkbox', function() {
-                    updateBulkActions();
-                });
-                
-                // Event delegation for select all checkbox
-                $(document).on('change', '#selectAll', function() {
-                    toggleSelectAll();
-                });
-            }
-            
-            // Initialize DataTable with enhanced search and sorting functionality
-            whatsNewTable = $('#whatsNewTable').DataTable({
-                responsive: true,
-                paging: true,
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                searching: true,
-                info: true,
-                order: [[priorityColumn, 'asc']],
-                
-                // Enhanced column definitions for better sorting
-                columnDefs: [
-                    { 
-                        orderable: false, 
-                        targets: isAdmin ? [0, actionsColumn] : [actionsColumn]
-                    },
-                    { 
-                        className: "text-center", 
-                        targets: isAdmin ? [0, priorityColumn] : [priorityColumn]
-                    },
-                    {
-                        // Title column - enable full text search
-                        type: 'string',
-                        targets: isAdmin ? [1] : [0]
-                    },
-                    {
-                        // Description column - enable full text search
-                        type: 'string', 
-                        targets: isAdmin ? [2] : [1]
-                    },
-                    {
-                        // Date columns - proper date sorting
-                        type: 'date',
-                        targets: isAdmin ? [4, 5] : [3, 4]
-                    }
-                ],
-                
-                // Enhanced language configuration
-                language: {
-                    search: "Search:",
-                    searchPlaceholder: "Search announcements...",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ announcements",
-                    infoEmpty: "Showing 0 to 0 of 0 announcements", 
-                    infoFiltered: "(filtered from _MAX_ total announcements)",
-                    zeroRecords: "No matching announcements found",
-                    emptyTable: "No announcements available",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next", 
-                        previous: "Previous"
-                    }
-                },
-                
-                // Clean DOM layout matching DataTables.net reference
-                dom: '<"row"<"col-sm-6"l><"col-sm-6"f>>' +
-                     '<"row"<"col-sm-12"tr>>' +
-                     '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-                
-                // Enhanced callbacks
-                drawCallback: function() {
-                    updateBulkActions();
-                },
-                initComplete: function() {
-                    console.log('What\'s New DataTable initialized with enhanced search and sorting');
-                    dataTableInitialized = true;
+            // Add clear priority filter button
+            setTimeout(() => {
+                const tableHeader = document.querySelector('#whatsNewTable thead .sort-filter-row');
+                if (tableHeader) {
+                    const clearButton = document.createElement('button');
+                    clearButton.className = 'clear-priority-filter-btn';
+                    clearButton.textContent = '↻ Reset';
+                    clearButton.title = 'Clear priority filter';
+                    clearButton.onclick = function() {
+                        DataTablesConfig.clearPrioritySortFilter();
+                    };
                     
-                    // Add individual column search (optional enhancement)
-                    this.api().columns().every(function(index) {
-                        var column = this;
-                        var columnIndex = index;
-                        
-                        // Skip checkbox and actions columns
-                        if ((isAdmin && (columnIndex === 0 || columnIndex === actionsColumn)) || 
-                            (!isAdmin && columnIndex === actionsColumn)) {
-                            return;
-                        }
-                    });
+                    // Add button to the last column (Actions column)
+                    const lastFilterCell = tableHeader.lastElementChild;
+                    if (lastFilterCell) {
+                        lastFilterCell.appendChild(clearButton);
+                    }
                 }
-            });
-        });
-
-        // Bulk Actions JavaScript
-        function toggleSelectAll() {
-            const selectAllCheckbox = document.getElementById('selectAll');
-            const checkboxes = document.querySelectorAll('.whatsnew-checkbox');
-            
-            if (selectAllCheckbox) {
-            checkboxes.forEach(checkbox => {
-                    checkbox.checked = selectAllCheckbox.checked;
-            });
-            
-            updateBulkActions();
-            }
-        }
-        
-        function updateBulkActions() {
-            const checkedBoxes = document.querySelectorAll('.whatsnew-checkbox:checked');
-            const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
-            
-            // Only update bulk actions if admin elements exist
-            if (bulkDeleteBtn) {
-                if (checkedBoxes.length > 0) {
-                bulkDeleteBtn.style.display = 'inline-block';
-            } else {
-                bulkDeleteBtn.style.display = 'none';
-                }
-            }
-
-            // Update select all checkbox state only if it exists
-            const selectAllCheckbox = document.getElementById('selectAll');
-            if (selectAllCheckbox) {
-                const allCheckboxes = document.querySelectorAll('.whatsnew-checkbox');
-                
-                if (checkedBoxes.length === 0) {
-                    selectAllCheckbox.indeterminate = false;
-                    selectAllCheckbox.checked = false;
-                } else if (checkedBoxes.length === allCheckboxes.length) {
-                    selectAllCheckbox.indeterminate = false;
-                    selectAllCheckbox.checked = true;
-                } else {
-                    selectAllCheckbox.indeterminate = true;
-                }
-            }
-        }
-        
-        function bulkAction(action) {
-            const checkedBoxes = document.querySelectorAll('.whatsnew-checkbox:checked');
-            const ids = Array.from(checkedBoxes).map(cb => cb.value);
-            
-            if (ids.length === 0) {
-                alert('Please select at least one announcement.');
-                return;
-            }
-            
-            let confirmMessage;
-            let url;
-
-            switch (action) {
-                case 'delete':
-                    confirmMessage = `Are you sure you want to delete ${ids.length} selected announcement(s)?`;
-                    url = '/whatsnew/bulk-delete';
-                    break;
-                default:
-                return;
-            }
-            
-            if (confirm(confirmMessage)) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-                form.action = url;
-            
-            ids.forEach(id => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'ids';
-                input.value = id;
-                form.appendChild(input);
-            });
-            
-            document.body.appendChild(form);
-            form.submit();
-        }
-        }
-
-
-
-        // Initialize bulk actions on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateBulkActions();
+            }, 200);
         });
     </script>
 </body>

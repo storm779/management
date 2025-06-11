@@ -7,211 +7,19 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Message Board - Visakh Refinery Portal</title>
+
+    
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- DataTables CSS -->
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    <!-- DataTables CSS (Official CDN) -->
+    <link href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
-    <style>
-        /* Reduced padding for statistics cards */
-        .stat-card .card-body {
-            padding: 1rem 0.75rem !important;
-        }
-        .stat-card .fs-2 {
-            font-size: 1.5rem !important;
-        }
-        .stat-card h4 {
-            font-size: 1.1rem !important;
-            margin-bottom: 0.25rem !important;
-        }
-        .stat-card p {
-            font-size: 0.8rem !important;
-            margin-bottom: 0 !important;
-        }
-        
-        /* Clean DataTables styling matching DataTables.net reference */
-        .dataTables_wrapper {
-            padding: 0;
-            margin-bottom: 1rem;
-        }
-        
-        /* Length control styling */
-        .dataTables_wrapper .dataTables_length {
-            margin-bottom: 1rem;
-        }
-        
-        .dataTables_wrapper .dataTables_length label {
-            font-weight: normal;
-            margin-bottom: 0;
-            color: #495057;
-        }
-        
-        .dataTables_wrapper .dataTables_length select {
-            margin: 0 0.5rem;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: white;
-            color: #495057;
-            min-width: 60px;
-        }
-        
-        /* Search control styling */
-        .dataTables_wrapper .dataTables_filter {
-            margin-bottom: 1rem;
-            text-align: right;
-        }
-        
-        .dataTables_wrapper .dataTables_filter label {
-            font-weight: normal;
-            margin-bottom: 0;
-            color: #495057;
-        }
-        
-        .dataTables_wrapper .dataTables_filter input[type="search"] {
-            margin-left: 0.5rem;
-            border: 1px solid #ced4da;
-            border-radius: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: white;
-            color: #495057;
-            width: 200px;
-        }
-        
-        .dataTables_wrapper .dataTables_filter input[type="search"]:focus {
-            border-color: #86b7fe;
-            outline: 0;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-        
-        /* Info and pagination styling */
-        .dataTables_wrapper .dataTables_info {
-            color: #6c757d;
-            font-size: 0.875rem;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate {
-            text-align: right;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            padding: 0.375rem 0.75rem;
-            margin-left: 0.125rem;
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem;
-            background: white;
-            color: #0d6efd;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: #e9ecef;
-            border-color: #adb5bd;
-            color: #0a58ca;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: #0d6efd;
-            border-color: #0d6efd;
-            color: white;
-        }
-        
-        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
-            color: #6c757d;
-            cursor: not-allowed;
-            background: white;
-            border-color: #dee2e6;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .dataTables_wrapper .dataTables_filter {
-                text-align: left;
-                margin-bottom: 0.5rem;
-            }
-            
-            .dataTables_wrapper .dataTables_filter input[type="search"] {
-                width: 100%;
-                margin-left: 0;
-                margin-top: 0.25rem;
-            }
-            
-            .dataTables_wrapper .dataTables_paginate {
-                text-align: center;
-            }
-        }
-        
-        /* Table styling */
-        #messagesTable {
-            border-collapse: collapse;
-            width: 100%;
-            background: white;
-        }
-        
-        #messagesTable thead th {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            padding: 12px 8px;
-            font-weight: 600;
-            color: #495057;
-            text-align: left;
-            position: relative;
-            border-top: none;
-        }
-        
-        #messagesTable thead th.sorting,
-        #messagesTable thead th.sorting_asc,
-        #messagesTable thead th.sorting_desc {
-            cursor: pointer;
-            padding-right: 30px;
-        }
-        
-        #messagesTable thead th.sorting:after,
-        #messagesTable thead th.sorting_asc:after,
-        #messagesTable thead th.sorting_desc:after {
-            position: absolute;
-            top: 12px;
-            right: 8px;
-            display: block;
-            font-family: "bootstrap-icons";
-        }
-        
-        #messagesTable thead th.sorting:after {
-            content: "\F282";
-            color: #6c757d;
-        }
-        
-        #messagesTable thead th.sorting_asc:after {
-            content: "\F283";
-            color: #0d6efd;
-        }
-        
-        #messagesTable thead th.sorting_desc:after {
-            content: "\F286";
-            color: #0d6efd;
-        }
-        
-        #messagesTable tbody td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #dee2e6;
-            vertical-align: middle;
-        }
-        
-        #messagesTable tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-        
-        /* Row striping */
-        #messagesTable tbody tr:nth-child(even) {
-            background-color: rgba(0,0,0,0.02);
-        }
-        
-        #messagesTable tbody tr:nth-child(even):hover {
-            background-color: #f8f9fa;
-        }
-    </style>
+    <!-- External CSS Files -->
+    <link th:href="@{/css/datatables-portal.css}" rel="stylesheet">
+    <link th:href="@{/css/form-enhancements.css}" rel="stylesheet">
 </head>
 <body>
     <!-- Sticky Navigation -->
@@ -284,7 +92,7 @@
     <div class="container-wrapper">
         <div class="container mt-4">
             <!-- Statistics Cards with Reduced Padding -->
-            <div class="row mb-4">
+            <div class="row mb-4" th:if="${messagesPage}">
                 <div class="col-lg-4 col-md-6 mb-3">
                     <div class="card border-0 shadow-sm stat-card">
                         <div class="card-body text-center">
@@ -319,6 +127,11 @@
                     </div>
                 </div>
             </div>
+            <div class="row mb-4" th:unless="${messagesPage}">
+                <div class="col-12">
+                    <div class="alert alert-warning text-center">No messages found or failed to load messages.</div>
+                </div>
+            </div>
 
             <!-- Add Message Button Section -->
             <div class="row mb-4" sec:authorize="hasRole('ADMIN')">
@@ -342,10 +155,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
-
-
             <!-- Messages Table with DataTables -->
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm" th:if="${messagesPage}">
                 <div class="card-header bg-light">
                     <div class="row align-items-center">
                         <div class="col">
@@ -354,26 +165,15 @@
                                 <span class="badge bg-primary ms-2" th:text="${messagesPage.totalElements}">0</span>
                             </h5>
                         </div>
-                        <div class="col-auto" sec:authorize="hasRole('ADMIN')">
-                            <button class="btn btn-sm btn-outline-danger" onclick="bulkAction('delete')" id="bulkDeleteBtn" style="display: none;">
-                                <i class="bi bi-trash me-1"></i>Delete Selected (<span id="selectedCount">0</span>)
-                            </button>
-                            <!-- Debug button - remove in production -->
-                            <button class="btn btn-sm btn-outline-info ms-2" onclick="updateBulkActions(); console.log('Manual trigger');" title="Debug: Trigger updateBulkActions">
-                                <i class="bi bi-bug"></i>
-                            </button>
-                        </div>
+
                     </div>
                 </div>
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="messagesTable" class="table table-striped table-hover" style="width:100%">
+                        <table id="messagesTable" class="table table-striped table-hover datatables" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th sec:authorize="hasRole('ADMIN')" style="width: 50px;">
-                                        <input type="checkbox" class="form-check-input" id="selectAll">
-                                    </th>
                                     <th>Header</th>
                                     <th>Message Preview</th>
                                     <th style="width: 80px;">Priority</th>
@@ -382,12 +182,8 @@
                                     <th style="width: 180px;">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody th:if="${messagesPage.content}">
                                 <tr th:each="message : ${messagesPage.content}" class="align-middle">
-                                    <td sec:authorize="hasRole('ADMIN')">
-                                        <input type="checkbox" class="form-check-input message-checkbox" 
-                                               th:value="${message.id}">
-                                    </td>
                                     <td>
                                         <div class="fw-semibold" th:text="${message.header}">Header</div>
                                         <small class="text-muted" th:if="${message.headerHindi}" th:text="${message.headerHindi}">Hindi Header</small>
@@ -430,6 +226,11 @@
                                             </form>
                                         </div>
                                     </td>
+                                </tr>
+                            </tbody>
+                            <tbody th:unless="${messagesPage.content}">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">No messages to display.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -494,6 +295,9 @@
                     </nav>
                     </div>
                 </div>
+            </div>
+            <div th:unless="${messagesPage}">
+                <div class="alert alert-warning text-center mt-4">No messages to display.</div>
             </div>
         </div>
     </div>
@@ -575,254 +379,54 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
+    
+    <!-- Scripts (Official CDN Setup) -->
+    <!-- jQuery (Required first) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
+            crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    
+    <!-- DataTables Core -->
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
+    
+    <!-- DataTables Extensions -->
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.bootstrap5.min.js"></script>
+    
+    <!-- External JavaScript Files -->
+    <script th:src="@{/js/datatables-config.js}"></script>
 
+    <!-- Page Specific JavaScript -->
     <script>
-        // Declare messagesTable in global scope so filter functions can access it
-        let messagesTable;
-        let dataTableInitialized = false;
-        
-        // Define bulk action functions FIRST (before they're used)
-        function updateBulkActions() {
-            const checkedBoxes = document.querySelectorAll('.message-checkbox:checked');
-            const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
-            const selectAllCheckbox = document.getElementById('selectAll');
-            const allCheckboxes = document.querySelectorAll('.message-checkbox');
-            
-            // Enhanced debug logging
-            console.log('=== updateBulkActions Debug ===');
-            console.log('Checked boxes:', checkedBoxes.length);
-            console.log('All checkboxes:', allCheckboxes.length);
-            console.log('Bulk delete button exists:', !!bulkDeleteBtn);
-            console.log('Select all checkbox exists:', !!selectAllCheckbox);
-            
-            if (bulkDeleteBtn) {
-                console.log('Button current display:', bulkDeleteBtn.style.display);
-                const selectedCountSpan = document.getElementById('selectedCount');
-                
-                if (checkedBoxes.length > 0) {
-                    bulkDeleteBtn.style.display = 'inline-block';
-                    bulkDeleteBtn.style.visibility = 'visible';  // Force visibility
-                    if (selectedCountSpan) selectedCountSpan.textContent = checkedBoxes.length;
-                    console.log('✅ SHOWING bulk delete button with count:', checkedBoxes.length);
-                } else {
-                    bulkDeleteBtn.style.display = 'none';
-                    if (selectedCountSpan) selectedCountSpan.textContent = '0';
-                    console.log('❌ HIDING bulk delete button');
-                }
-            } else {
-                console.log('❌ ERROR: Bulk delete button not found!');
-            }
-
-            // Update select all checkbox state only if it exists
-            if (selectAllCheckbox) {
-                
-                if (checkedBoxes.length === 0) {
-                    selectAllCheckbox.indeterminate = false;
-                    selectAllCheckbox.checked = false;
-                } else if (checkedBoxes.length === allCheckboxes.length) {
-                    selectAllCheckbox.indeterminate = false;
-                    selectAllCheckbox.checked = true;
-                } else {
-                    selectAllCheckbox.indeterminate = true;
-                }
-            }
-        }
-
-        function toggleSelectAll() {
-            const selectAllCheckbox = document.getElementById('selectAll');
-            const checkboxes = document.querySelectorAll('.message-checkbox');
-            
-            if (selectAllCheckbox) {
-            checkboxes.forEach(checkbox => {
-                    checkbox.checked = selectAllCheckbox.checked;
-            });
-            
-            updateBulkActions();
-            }
-        }
-
-        function bulkAction(action) {
-            const checkedBoxes = document.querySelectorAll('.message-checkbox:checked');
-            const ids = Array.from(checkedBoxes).map(cb => cb.value);
-            
-            console.log('bulkAction called with:', action, 'IDs:', ids);
-            
-            if (ids.length === 0) {
-                alert('Please select at least one message.');
-                return;
-            }
-            
-            let confirmMessage;
-            let url;
-            
-            switch (action) {
-                case 'delete':
-                    confirmMessage = `Are you sure you want to delete ${ids.length} selected message(s)?`;
-                    url = '/messageboard/bulk/delete';
-                    break;
-                default:
-                    console.log('Unknown action:', action);
-                    return;
-            }
-            
-            if (confirm(confirmMessage)) {
-                console.log('User confirmed bulk delete, submitting form...');
-                
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = url;
-                
-                // Add CSRF token for Spring Security
-                const csrfToken = document.querySelector('meta[name="_csrf"]');
-                const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
-                
-                if (csrfToken && csrfHeader) {
-                    const csrfInput = document.createElement('input');
-                    csrfInput.type = 'hidden';
-                    csrfInput.name = '_csrf';
-                    csrfInput.value = csrfToken.getAttribute('content');
-                    form.appendChild(csrfInput);
-                    console.log('Added CSRF token to form');
-                } else {
-                    console.log('No CSRF token found in page meta tags');
-                }
-                
-                // Add all selected IDs
-                ids.forEach(id => {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'ids';
-                    input.value = id;
-                    form.appendChild(input);
-                    console.log('Added ID to form:', id);
-                });
-                
-                document.body.appendChild(form);
-                console.log('Submitting form with', ids.length, 'IDs');
-                form.submit();
-            } else {
-                console.log('User cancelled bulk delete');
-            }
-        }
-        
         $(document).ready(function() {
-            // Check if user is admin to determine column configuration
-            const isAdmin = document.getElementById('selectAll') !== null;
-            const priorityColumn = isAdmin ? 3 : 2; // Priority column index (shows displayOrder)
-            const actionsColumn = isAdmin ? 6 : 5; // Actions column index
+            // Initialize DataTable with priority-only filter using external configuration
+            const messagesTable = DataTablesConfig.initializeMessageBoardDataTableWithPriorityFilter(false, true); // false = no bulk actions, true = enable priority filter
             
-            // Set up event delegation for checkboxes (works even when DataTables redraws)
-            if (isAdmin) {
-                // Event delegation for individual checkboxes
-                $(document).on('change', '.message-checkbox', function() {
-                    updateBulkActions();
-                });
-                
-                // Event delegation for select all checkbox
-                $(document).on('change', '#selectAll', function() {
-                    toggleSelectAll();
-                });
-            }
-            
-            // Initialize DataTable with enhanced search and sorting functionality
-            messagesTable = $('#messagesTable').DataTable({
-                responsive: true,
-                paging: true,
-                pageLength: 10,
-                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
-                searching: true,
-                info: true,
-                order: [[priorityColumn, 'asc']],
-                
-                // Enhanced column definitions for better sorting
-                columnDefs: [
-                    { 
-                        orderable: false, 
-                        targets: isAdmin ? [0, actionsColumn] : [actionsColumn]
-                    },
-                    { 
-                        className: "text-center", 
-                        targets: isAdmin ? [0, priorityColumn] : [priorityColumn]
-                    },
-                    {
-                        // Header column - enable full text search
-                        type: 'string',
-                        targets: isAdmin ? [1] : [0]
-                    },
-                    {
-                        // Message column - enable full text search
-                        type: 'string', 
-                        targets: isAdmin ? [2] : [1]
-                    },
-                    {
-                        // Date columns - proper date sorting
-                        type: 'date',
-                        targets: isAdmin ? [4, 5] : [3, 4]
-                    }
-                ],
-                
-                // Enhanced language configuration
-                language: {
-                    search: "Search:",
-                    searchPlaceholder: "Search messages...",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ messages",
-                    infoEmpty: "Showing 0 to 0 of 0 messages",
-                    infoFiltered: "(filtered from _MAX_ total messages)",
-                    zeroRecords: "No matching messages found",
-                    emptyTable: "No messages available",
-                    paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next", 
-                        previous: "Previous"
-                    }
-                },
-                
-                // Clean DOM layout matching DataTables.net reference
-                dom: '<"row"<"col-sm-6"l><"col-sm-6"f>>' +
-                     '<"row"<"col-sm-12"tr>>' +
-                     '<"row"<"col-sm-5"i><"col-sm-7"p>>',
-                
-                // Enhanced callbacks
-                drawCallback: function() {
-                    updateBulkActions();
-                },
-                initComplete: function() {
-                    console.log('Message Board DataTable initialized with enhanced search and sorting');
-                    dataTableInitialized = true;
+            // Add clear priority filter button
+            setTimeout(() => {
+                const tableHeader = document.querySelector('#messagesTable thead .sort-filter-row');
+                if (tableHeader) {
+                    const clearButton = document.createElement('button');
+                    clearButton.className = 'clear-priority-filter-btn';
+                    clearButton.textContent = '↻ Reset';
+                    clearButton.title = 'Clear priority filter';
+                    clearButton.onclick = function() {
+                        DataTablesConfig.clearPrioritySortFilter();
+                    };
                     
-                    // Add individual column search (optional enhancement)
-                    this.api().columns().every(function(index) {
-                        var column = this;
-                        var columnIndex = index;
-                        
-                        // Skip checkbox and actions columns
-                        if ((isAdmin && (columnIndex === 0 || columnIndex === actionsColumn)) || 
-                            (!isAdmin && columnIndex === actionsColumn)) {
-                            return;
-                        }
-                    });
+                    // Add button to the last column (Actions column)
+                    const lastFilterCell = tableHeader.lastElementChild;
+                    if (lastFilterCell) {
+                        lastFilterCell.appendChild(clearButton);
+                    }
                 }
-            });
-        });
-
-        // Bulk Actions JavaScript - Functions defined above
-
-
-
-        // Initialize bulk actions on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateBulkActions();
+            }, 200);
         });
     </script>
 </body>
