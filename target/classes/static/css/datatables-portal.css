@@ -348,98 +348,6 @@ table.dataTable thead tr.sort-filter-row th {
     background-color: #f8f9fa;
 }
 
-/* Priority badges */
-.priority-badge {
-    display: inline-block;
-    padding: 0.25em 0.5em;
-    border-radius: 0.375rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-align: center;
-    min-width: 2rem;
-}
-
-.priority-1 { 
-    background-color: #d1ecf1; 
-    color: #0c5460; 
-}
-
-.priority-2 { 
-    background-color: #cce5ff; 
-    color: #004085; 
-}
-
-.priority-3 { 
-    background-color: #ffffcc; 
-    color: #856404; 
-}
-
-.priority-4 { 
-    background-color: #f8d7da; 
-    color: #721c24; 
-}
-
-/* Load All Data Notification */
-.load-all-notification {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    border: 1px solid #2196f3;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
-}
-
-.load-all-notification .notification-icon {
-    color: #1976d2;
-    font-size: 1.5rem;
-}
-
-.load-all-notification .btn-load-all {
-    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-    border: none;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.load-all-notification .btn-load-all:hover {
-    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
-}
-
-/* Scrolling message preview */
-.scrolling-preview {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border: 2px dashed #6c757d;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-top: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.scrolling-preview h6 {
-    color: #495057;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.scrolling-text {
-    white-space: nowrap;
-    overflow: hidden;
-    animation: scroll-left 15s linear infinite;
-    color: #212529;
-    font-weight: 500;
-}
-
-@keyframes scroll-left {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-
 /* DataTables Portal Styling */
 
 /* Statistics Cards Styling */
@@ -448,39 +356,41 @@ table.dataTable thead tr.sort-filter-row th {
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 15px;
-    padding: 1.5rem;
+    background: transparent;
+    color: #212529;
+    border-radius: 0;
+    padding: 1rem;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: none;
+    transition: none;
     border: none;
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: none;
+    box-shadow: none;
 }
 
 .stat-card .card-body {
-    padding: 0;
+    padding: 1rem;
 }
 
 .stat-card h3 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
+    color: #212529;
 }
 
 .stat-card p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 0;
-    opacity: 0.9;
+    opacity: 1;
+    color: #6c757d;
 }
 
-/* Priority Badge Styling */
+/* Priority Badge Styling - Consolidated (removed duplicates) */
 .priority-badge {
     display: inline-flex;
     align-items: center;

@@ -6,19 +6,7 @@
 // Global variables
 let dataTable;
 let dataTableInitialized = false;
-
-// Debounce function to limit rapid function calls
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+let currentPrioritySort = ''; // Track current priority sort state
 
 /**
  * Initialize DataTable with configuration
@@ -30,11 +18,15 @@ function initializeDataTable(tableId, config = {}) {
     const defaultConfig = {
         responsive: true,
         paging: true,
-        pageLength: 10,
+        pageLength: 25, // Increased default page size
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         searching: true,
         info: false,
         ordering: false, // Disable all column sorting by default
+        deferRender: false, // Process all data immediately
+        stateSave: false, // Don't save state to ensure fresh data processing
+        processing: false, // Disable processing indicator since we're client-side
+        serverSide: false, // Ensure client-side processing for full dataset operations
         
         // Enhanced language configuration
         language: {
@@ -78,11 +70,11 @@ function initializeDataTable(tableId, config = {}) {
     // Merge with custom configuration
     const finalConfig = Object.assign({}, defaultConfig, config);
     
-    // Initialize DataTable
+    // Initialize DataTable with enhanced data processing
     dataTable = $(tableId).DataTable(finalConfig);
     dataTableInitialized = true;
     
-    console.log(`DataTable initialized for ${tableId} with enhanced functionality`);
+    console.log(`DataTable initialized for ${tableId} with enhanced functionality for full dataset operations`);
     
     return dataTable;
 }
@@ -128,6 +120,8 @@ function initializeWhatsNewDataTable(isAdmin = false) {
             if (typeof updateBulkActions === 'function') {
                 updateBulkActions();
             }
+            // Maintain priority sort state across page navigation
+            maintainPrioritySortState(this.api());
         },
         initComplete: function() {
             console.log('What\'s New DataTable initialized with enhanced search and sorting');
@@ -179,6 +173,8 @@ function initializeMessageBoardDataTable(isAdmin = false) {
             if (typeof updateBulkActions === 'function') {
                 updateBulkActions();
             }
+            // Maintain priority sort state across page navigation
+            maintainPrioritySortState(this.api());
         },
         initComplete: function() {
             console.log('Message Board DataTable initialized with enhanced search and sorting');
@@ -247,7 +243,13 @@ function addCustomSearch(searchInputId, tableInstance = null) {
     const searchInput = document.getElementById(searchInputId);
     
     if (searchInput && table) {
-        const debouncedSearch = debounce(function(value) {
+        const debouncedSearch = (typeof debounce !== 'undefined' ? debounce : function(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        })(function(value) {
             table.search(value).draw();
         }, 300);
         
@@ -521,8 +523,14 @@ function createPrioritySortDropdown(columnIndex, table) {
     
     // Add event listener with global data filtering
     select.addEventListener('change', function() {
-        console.log('🔄 Priority filter changed to:', this.value);
-        applyPrioritySortFilter(columnIndex, this.value, table);
+        const selectedValue = this.value;
+        console.log('🔄 Priority filter changed to:', selectedValue);
+        
+        // Ensure we're working with the full dataset
+        table.search('').columns().search('').draw();
+        
+        // Apply the priority sort filter
+        applyPrioritySortFilter(columnIndex, selectedValue, table);
     });
     
     console.log('✅ Priority dropdown created and event listener attached');
@@ -531,7 +539,7 @@ function createPrioritySortDropdown(columnIndex, table) {
 
 /**
  * Apply priority sort filter across ALL data (not just current page)
- * Since ordering is disabled, we'll use a manual approach
+ * Enhanced to work with the entire dataset regardless of pagination
  * @param {number} columnIndex - The priority column index
  * @param {string} sortDirection - 'asc', 'desc', or '' for default
  * @param {Object} table - DataTable instance
@@ -548,41 +556,73 @@ function applyPrioritySortFilter(columnIndex, sortDirection, table) {
         return;
     }
     
-    // Clear any existing column search first
-    table.columns(columnIndex).search('');
+    // Store the current sort state globally
+    currentPrioritySort = sortDirection;
+    
+    // Clear any existing search to ensure we work with all data
+    table.search('').columns().search('');
     
     if (sortDirection === '') {
         console.log('↩️ Resetting to default order');
-        // Reset to default ordering
+        // Reset to original DOM order by clearing all ordering
         table.order([]).draw();
     } else {
-        console.log('📊 Applying priority sort:', sortDirection);
+        console.log('📊 Applying persistent priority sort on ALL data:', sortDirection);
         
-        // Temporarily enable ordering for the entire table
-        table.settings()[0].oFeatures.bSort = true;
+        // PERMANENTLY enable sorting for the priority column
+        const settings = table.settings()[0];
+        settings.oFeatures.bSort = true;
+        settings.aoColumns[columnIndex].bSortable = true;
         
-        // Enable sorting for the priority column
-        table.settings()[0].aoColumns[columnIndex].bSortable = true;
-        
-        // Apply sorting by priority column
+        // Apply sort to the priority column across ALL pages
+        console.log(`🔄 Sorting column ${columnIndex} in ${sortDirection} direction`);
         table.order([[columnIndex, sortDirection]]).draw();
         
-        // Disable ordering again
-        table.settings()[0].oFeatures.bSort = false;
-        table.settings()[0].aoColumns[columnIndex].bSortable = false;
+        // Keep sorting enabled to maintain state across page navigation
+        // Don't disable it back - this is the key fix!
         
         if (sortDirection === 'asc') {
-            console.log('Sorted priority: Low to High (1, 2, 3, 4, 5, 6)');
+            console.log('✅ Sorted priority: Low to High (1, 2, 3, 4, 5, 6)');
         } else {
-            console.log('Sorted priority: High to Low (6, 5, 4, 3, 2, 1)');
+            console.log('✅ Sorted priority: High to Low (6, 5, 4, 3, 2, 1)');
         }
     }
     
     // Update dropdown visual state
     updatePrioritySortDropdownState(sortDirection);
     
+    // Get accurate count of ALL data (not just current page)
     const totalRecords = table.data().length;
-    console.log(`✅ Priority sort applied: ${sortDirection || 'default'} across all ${totalRecords} records`);
+    const visibleRecords = table.page.info().recordsDisplay;
+    console.log(`✅ Priority sort applied: ${sortDirection || 'default'} across all ${totalRecords} records (${visibleRecords} currently visible)`);
+}
+
+/**
+ * Maintain priority sort state across page navigation and table redraws
+ * @param {Object} table - DataTable API instance
+ */
+function maintainPrioritySortState(table) {
+    if (currentPrioritySort && currentPrioritySort !== '') {
+        console.log('🔄 Maintaining priority sort state:', currentPrioritySort);
+        
+        // Find priority column (usually column 2)
+        const priorityColumnIndex = 2;
+        
+        // Ensure sorting remains enabled for priority column
+        const settings = table.settings()[0];
+        settings.oFeatures.bSort = true;
+        settings.aoColumns[priorityColumnIndex].bSortable = true;
+        
+        // Reapply the sort order if it's not currently applied
+        const currentOrder = table.order();
+        if (!currentOrder.length || currentOrder[0][0] !== priorityColumnIndex || currentOrder[0][1] !== currentPrioritySort) {
+            console.log('🔧 Reapplying priority sort:', currentPrioritySort);
+            table.order([[priorityColumnIndex, currentPrioritySort]]);
+        }
+        
+        // Update dropdown state
+        updatePrioritySortDropdownState(currentPrioritySort);
+    }
 }
 
 /**
@@ -653,6 +693,9 @@ function initializeMessageBoardDataTableWithPriorityFilter(isAdmin = false, enab
  * Clear priority sort filter and reset to default
  */
 function clearPrioritySortFilter() {
+    // Clear global state
+    currentPrioritySort = '';
+    
     const priorityDropdown = document.querySelector('.priority-sort-filter');
     if (priorityDropdown) {
         priorityDropdown.value = '';
@@ -661,8 +704,8 @@ function clearPrioritySortFilter() {
     }
     
     if (dataTable) {
-        // Reset to default order (priority column ascending)
-        dataTable.order([[2, 'asc']]).draw();
+        // Reset to default order by clearing all ordering
+        dataTable.order([]).draw();
     }
 }
 
@@ -687,6 +730,5 @@ window.DataTablesConfig = {
     refreshTableData,
     getSelectedRows,
     clearAllFilters,
-    setTableLoading,
-    debounce
+    setTableLoading
 }; 

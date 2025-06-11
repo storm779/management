@@ -76,56 +76,12 @@ function initializeFormEnhancements() {
         });
     });
     
-    // Character count for text inputs
-    const textInputs = document.querySelectorAll('input[maxlength], textarea[maxlength]');
-    textInputs.forEach(input => {
-        addCharacterCounter(input);
-    });
-    
-    // Auto-resize textareas
-    const textareas = document.querySelectorAll('textarea');
-    textareas.forEach(textarea => {
-        autoResizeTextarea(textarea);
-    });
+    // Character count and auto-resize handled by form-enhancements.js
 }
 
 /**
- * Add character counter to input fields
+ * Character counter and auto-resize functions moved to form-enhancements.js
  */
-function addCharacterCounter(input) {
-    const maxLength = input.getAttribute('maxlength');
-    if (!maxLength) return;
-    
-    const counter = document.createElement('small');
-    counter.className = 'form-text text-muted character-counter';
-    
-    const updateCounter = () => {
-        const remaining = maxLength - input.value.length;
-        counter.textContent = `${input.value.length}/${maxLength} characters`;
-        
-        if (remaining < 20) {
-            counter.className = 'form-text text-warning character-counter';
-        } else if (remaining < 0) {
-            counter.className = 'form-text text-danger character-counter';
-        } else {
-            counter.className = 'form-text text-muted character-counter';
-        }
-    };
-    
-    input.addEventListener('input', updateCounter);
-    input.parentNode.appendChild(counter);
-    updateCounter();
-}
-
-/**
- * Auto-resize textarea based on content
- */
-function autoResizeTextarea(textarea) {
-    textarea.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
-    });
-}
 
 /**
  * Table enhancements
