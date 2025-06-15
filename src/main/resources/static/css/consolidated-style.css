@@ -741,27 +741,3 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* ===========================
    PRINT STYLES
    =========================== */
-@media print {
-    .navbar-sticky,
-    .enhanced-footer,
-    .navbar, 
-    .btn, 
-    .pagination, 
-    footer {
-        display: none !important;
-    }
-    
-    body {
-        padding-top: 0;
-    }
-    
-    .card {
-        box-shadow: none !important;
-        border: 1px solid #dee2e6 !important;
-    }
-    
-    .card-header {
-        background-color: var(--light-color) !important;
-        color: var(--dark-color) !important;
-    }
-} 

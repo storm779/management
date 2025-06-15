@@ -255,17 +255,43 @@ public class WhatsNewService {
     }
 
     /**
-     * Initialize display orders for existing records that don't have them
+     * Initialize display orders for existing records that don't have them or have incorrect ordering
      */
     @Transactional
     public void initializeDisplayOrdersIfNeeded() {
-        // Check if there are any items without display orders
-        List<WhatsNew> itemsWithoutOrder = whatsNewRepository.findAll()
-            .stream()
-            .filter(w -> w.getDisplayOrder() == null)
-            .collect(java.util.stream.Collectors.toList());
+        List<WhatsNew> allItems = whatsNewRepository.findAll();
         
-        if (!itemsWithoutOrder.isEmpty()) {
+        // Check if there are any items without display orders
+        boolean hasItemsWithoutOrder = allItems.stream()
+            .anyMatch(w -> w.getDisplayOrder() == null);
+        
+        // Check if display orders are properly sequential (1, 2, 3, 4, 5...)
+        boolean hasIncorrectSequence = false;
+        if (!hasItemsWithoutOrder && !allItems.isEmpty()) {
+            // Sort by priority first, then creation date (same as recalculation logic)
+            allItems.sort((i1, i2) -> {
+                int priorityCompare = i1.getPriority().compareTo(i2.getPriority());
+                if (priorityCompare != 0) {
+                    return priorityCompare;
+                }
+                if (i1.getCreatedDate() != null && i2.getCreatedDate() != null) {
+                    return i1.getCreatedDate().compareTo(i2.getCreatedDate());
+                }
+                return i1.getId().compareTo(i2.getId());
+            });
+            
+            // Check if display orders match expected sequence
+            for (int i = 0; i < allItems.size(); i++) {
+                if (allItems.get(i).getDisplayOrder() == null || 
+                    !allItems.get(i).getDisplayOrder().equals(i + 1)) {
+                    hasIncorrectSequence = true;
+                    break;
+                }
+            }
+        }
+        
+        // Recalculate if needed
+        if (hasItemsWithoutOrder || hasIncorrectSequence) {
             recalculateAllDisplayOrders();
         }
     }

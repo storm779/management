@@ -52,6 +52,9 @@ public class WhatsNewController {
             @RequestParam(required = false) String title,
             Model model) {
 
+        // Ensure display orders are properly initialized/recalculated
+        whatsNewService.initializeDisplayOrdersIfNeeded();
+
         Page<WhatsNew> whatsNewPage;
 
         // Apply filters

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Datatable</title>
+    <link rel= "stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.2/b-3.2.3/b-html5-3.2.3/sp-2.3.3/datatables.min.css"
+        rel="stylesheet" integrity="sha384-Kn5kfZb2xSUkNKzt0TntGun5+Qkr+gvo45BNFiGuqYwHbo6nHh9RCGoeUNjPFq87"
+        crossorigin="anonymous">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h4 class="mt-2"></h4>Datatable tutorial id="example"</h4>
+        <hr>
+        <div class="table-responsive">
+            <table id="example" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.2/b-3.2.3/b-html5-3.2.3/sp-2.3.3/datatables.min.js"
+        integrity="sha384-O14cb99F6VrkZEyGuSPcL1QD1FGdIdVmY4AgCcBMXm8W6uMSjEIXXsDkyIqJtrKg"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').Datatble({
+
+            });
+        });
+    </script>
+
+</body>
+
+</html>
